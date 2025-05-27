@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Carga - Software de Gestão de Cargas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="imagex/png" href="icon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1e2130;
+            height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .user-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .user-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1e2130;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        h1 span {
+            color: #1e2130;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: #1e2130;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .description {
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .description p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .cta-button {
+            margin-bottom: 40px;
+        }
+
+        .cta-button button {
+            background-color: #1e2130;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .image-gallery {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 15px;
+        }
+
+        .gallery-item {
+            flex: 1;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px ) {
+            .image-gallery {
+                flex-direction: column;
+            }
+            
+            .gallery-item {
+                margin-bottom: 15px;
+            }
+            
+            .description p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="logo-container">
+                <img src="img1.jpg" alt="Smart Carga Logo" class="logo">
+                <h1>Smart <span>Carga</span></h1>
+                <p class="subtitle">SOFTWARE DE GESTÃO DE CARGAS</p>
+            </div>
+            
+            <div class="description">
+                <p>
+                    Somos a SMART CARGA, um software criado por estudantes universitários para otimizar a gestão de cargas dentro 
+                    de galpões. Organizamos, rastreamos e controlamos o fluxo de mercadorias com tecnologia simples, eficiente e 
+                    acessível. Nosso propósito é trazer mais organização e sustentabilidade para a logística interna, reduzindo perdas e 
+                    promovendo um uso mais inteligente dos recursos — tudo alinhado aos ODS 9 e 12 da ONU.
+                </p>
+            </div>
+            
+            <div class="cta-button">
+                <button>CLIQUE E FAÇA PARTE</button>
+            </div>
+            
+            <div class="image-gallery">
+                <div class="gallery-item">
+                    <img src="img2.jpg" alt="Contêineres">
+                </div>
+                <div class="gallery-item">
+                    <img src="img3.jpg" alt="Caminhões">
+                </div>
+                <div class="gallery-item">
+                    <img src="img4.jpg" alt="Vista aérea de caminhões">
+                </div>
+            </div>
+        </div
+    </main>
+    
+    <script>
+        // Script para redirecionar após clicar no botão
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleciona o botão de CTA
+            const ctaButton = document.querySelector('.cta-button button');
+            
+            // Adiciona o evento de clique
+            ctaButton.addEventListener('click', function() {
+                // Redireciona para a próxima página
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

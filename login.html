@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Carga - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="imagex/png" href="icon.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      color: #1e2130;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      color: #1e2130;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #1e2130;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-group {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 2px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      width: 100%;
+      max-width: 180px;
+      padding: 12px;
+      background-color: #1e2130;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .erro {
+      color: red;
+      margin-top: 10px;
+    }
+
+    .cadastro-link {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .cadastro-link a {
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .cadastro-link a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-line {
+      width: 100%;
+      max-width: 600px;
+      height: 2px;
+      background-color: #0099ff;
+      margin: 40px auto 0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px ) {
+      .container {
+        padding: 15px;
+      }
+      
+      .form-group, button {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <div class="logo">
+        <img src="img1.jpg" alt="Smart Carga Logo">
+        <h1>Smart Carga</h1>
+      </div>
+      <p class="subtitle">SOFTWARE DE GESTÃO DE CARGAS</p>
+    </div>
+    
+    <h2 class="title">Faça seu Login</h2>
+    
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" required>
+      </div>
+      
+      <button type="submit">Entrar</button>
+      <p id="mensagem-erro" class="erro"></p>
+    </form>
+    
+    <p class="cadastro-link">Não tem uma conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
+  </div>
+  
+  <div class="footer-line"></div>
+
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+      const mensagemErro = document.getElementById("mensagem-erro");
+
+      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+      const usuarioEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
+
+      if (usuarioEncontrado) {
+        localStorage.setItem("usuarioLogado", usuarioEncontrado.usuario);
+        window.location.href = "dashboard.html"; // redireciona para dashboard
+      } else {
+        mensagemErro.textContent = "Email ou senha incorretos.";
+      }
+    });
+  </script>
+</body>
+</html>

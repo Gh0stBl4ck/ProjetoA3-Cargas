@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Carga - Monitoramento de Cargas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <link rel="shortcut icon" type="imagex/png" href="icon.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      color: #1e2130;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      color: #1e2130;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #1e2130;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1 );
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+      text-align: center;
+    }
+
+    th {
+      background-color: #1e2130;
+      color: white;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .map-container {
+      height: 350px;
+      margin: 10px 0;
+      display: none;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    button {
+      background: none;
+      color: #6c63ff;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: underline;
+      padding: 5px;
+    }
+
+    button:hover {
+      color: #554de2;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-line {
+      width: 100%;
+      max-width: 1000px;
+      height: 2px;
+      background-color: #0099ff;
+      margin: 40px auto 0;
+    }
+
+    .status-pendente {
+      color: #ff9800;
+      font-weight: 500;
+    }
+
+    .status-transito {
+      color: #2196f3;
+      font-weight: 500;
+    }
+
+    .status-entregue {
+      color: #4caf50;
+      font-weight: 500;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      table {
+        font-size: 0.9rem;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+      
+      .map-container {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <div class="logo">
+        <img src="img1.jpg" alt="Smart Carga Logo">
+        <h1>Smart Carga</h1>
+      </div>
+      <p class="subtitle">SOFTWARE DE GESTÃO DE CARGAS</p>
+    </div>
+    
+    <h2 class="title">Monitoramento de Cargas</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Data</th>
+          <th>Hora</th>
+          <th>Tipo</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="lista-agendamentos"></tbody>
+    </table>
+    
+    <a href="dashboard.html" class="back-link">← Voltar ao Dashboard</a>
+  </div>
+  
+  <div class="footer-line"></div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script>
+    // Verificar se o usuário está logado
+    document.addEventListener('DOMContentLoaded', function( ) {
+      const usuarioLogado = localStorage.getItem("usuarioLogado");
+      
+      if (!usuarioLogado) {
+        // Redirecionar para a página de login se não estiver logado
+        window.location.href = "login.html";
+        return;
+      }
+      
+      const lista = document.getElementById("lista-agendamentos");
+      const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+
+      const mapas = {}; // Armazena instâncias dos mapas
+      const statusOptions = ["Pendente", "Em trânsito", "Entregue"];
+
+      lista.innerHTML = "";
+
+      if (agendamentos.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 5;
+        td.textContent = "Nenhum agendamento encontrado";
+        td.style.padding = "20px";
+        tr.appendChild(td);
+        lista.appendChild(tr);
+        return;
+      }
+
+      agendamentos.forEach((agendamento, index) => {
+        // Gerar um status aleatório para demonstração
+        const randomStatus = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+        const statusClass = randomStatus === "Pendente" ? "status-pendente" : 
+                           randomStatus === "Em trânsito" ? "status-transito" : "status-entregue";
+        
+        const tr = document.createElement("tr");
+
+        const tdEmpresa = document.createElement("td");
+        const empresaBtn = document.createElement("button");
+        empresaBtn.textContent = agendamento.empresa;
+        empresaBtn.addEventListener("click", () => toggleMapa(index, agendamento));
+        tdEmpresa.appendChild(empresaBtn);
+
+        const tdData = document.createElement("td");
+        tdData.textContent = formatarData(agendamento.data);
+
+        const tdHora = document.createElement("td");
+        tdHora.textContent = agendamento.hora;
+
+        const tdTipo = document.createElement("td");
+        tdTipo.textContent = agendamento.tipo;
+
+        const tdStatus = document.createElement("td");
+        tdStatus.textContent = randomStatus;
+        tdStatus.className = statusClass;
+
+        tr.appendChild(tdEmpresa);
+        tr.appendChild(tdData);
+        tr.appendChild(tdHora);
+        tr.appendChild(tdTipo);
+        tr.appendChild(tdStatus);
+
+        lista.appendChild(tr);
+
+        // Linha para o mapa
+        const trMapa = document.createElement("tr");
+        const tdMapa = document.createElement("td");
+        tdMapa.colSpan = 5;
+
+        const mapaDiv = document.createElement("div");
+        mapaDiv.id = `mapa-${index}`;
+        mapaDiv.className = "map-container";
+
+        tdMapa.appendChild(mapaDiv);
+        trMapa.appendChild(tdMapa);
+        lista.appendChild(trMapa);
+      });
+
+      function formatarData(dataString) {
+        if (!dataString) return "";
+        const partes = dataString.split('-');
+        if (partes.length !== 3) return dataString;
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+      }
+
+      function toggleMapa(index, agendamento) {
+        const mapaDiv = document.getElementById(`mapa-${index}`);
+
+        if (mapas[index]) {
+          // Se o mapa já está criado, destruí-lo
+          mapas[index].remove();
+          delete mapas[index];
+          mapaDiv.style.display = "none";
+          return;
+        }
+
+        mapaDiv.style.display = "block";
+
+        setTimeout(() => {
+          const map = L.map(mapaDiv.id).setView([-23.96, -46.33], 10);
+          mapas[index] = map; // Salva o mapa na lista
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          } ).addTo(map);
+
+          function geocode(local) {
+            return fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(local )}`)
+              .then(res => res.json())
+              .then(data => {
+                if (data.length > 0) {
+                  return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+                } else {
+                  throw new Error("Local não encontrado: " + local);
+                }
+              });
+          }
+
+          Promise.all([
+            geocode("Santos, SP"),
+            geocode(agendamento.cidade)
+          ])
+          .then(([coordOrigem, coordDestino]) => {
+            L.Routing.control({
+              waypoints: [
+                L.latLng(coordOrigem[0], coordOrigem[1]),
+                L.latLng(coordDestino[0], coordDestino[1])
+              ],
+              lineOptions: {
+                styles: [{ color: "#6c63ff", weight: 6 }]
+              },
+              routeWhileDragging: false,
+              draggableWaypoints: false,
+              addWaypoints: false,
+              createMarker: () => null
+            }).addTo(map);
+
+            setTimeout(() => map.invalidateSize(), 200);
+          })
+          .catch(error => {
+            mapaDiv.innerHTML = `<p style="color:red; padding: 20px;">Erro: ${error.message}</p>`;
+          });
+        }, 10);
+      }
+    });
+  </script>
+</body>
+</html>
+

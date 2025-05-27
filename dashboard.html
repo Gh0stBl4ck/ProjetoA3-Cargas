@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Carga - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="imagex/png" href="icon.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 100px;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      color: #1e2130;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      color: #1e2130;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .welcome-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #1e2130;
+    }
+
+    .welcome-subtitle {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      color: #1e2130;
+    }
+
+    .dashboard-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .dashboard-button {
+      width: 100%;
+      max-width: 300px;
+      padding: 15px;
+      background-color: #1e2130;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .dashboard-button:hover {
+      background-color: #2a2d3e;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px ) {
+      .container {
+        padding: 15px;
+      }
+      
+      .dashboard-button {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <div class="logo">
+        <img src="img1.jpg" alt="Smart Carga Logo">
+        <h1>Smart Carga</h1>
+      </div>
+      <p class="subtitle">SOFTWARE DE GESTÃO DE CARGAS</p>
+    </div>
+    
+    <h2 class="welcome-title">Bem vindo, Admin</h2>
+    <p class="welcome-subtitle">ESCOLHA UMA OPÇÃO ABAIXO</p>
+    
+    <div class="dashboard-buttons">
+      <a href="agendamento.html" class="dashboard-button">Cadastramento de Carga</a>
+      <a href="monitoramento.html" class="dashboard-button">Monitoramento</a>
+    </div>
+  </div>
+
+  <script>
+    // Verificar se o usuário está logado
+    document.addEventListener('DOMContentLoaded', function() {
+      const usuarioLogado = localStorage.getItem("usuarioLogado");
+      
+      if (!usuarioLogado) {
+        // Redirecionar para a página de login se não estiver logado
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
