@@ -134,26 +134,15 @@
       margin: 40px auto 0;
     }
 
-    .mensagem {
+    .mensagem-sucesso {
       margin-top: 15px;
       padding: 10px;
+      background-color: rgba(76, 175, 80, 0.1 );
+      color: #4caf50;
+      border: 1px solid #4caf50;
       border-radius: 4px;
       text-align: center;
       display: none;
-    }
-
-    .sucesso {
-      display: block;
-      background-color: rgba(76, 175, 80, 0.1);
-      color: #4caf50;
-      border: 1px solid #4caf50;
-    }
-
-    .erro {
-      display: block;
-      background-color: rgba(244, 67, 54, 0.1);
-      color: #f44336;
-      border: 1px solid #f44336;
     }
 
     /* Responsividade */
@@ -214,9 +203,11 @@
         </div>
         
         <button type="submit">Agendar</button>
+        
+        <div id="mensagem-sucesso" class="mensagem-sucesso">
+          Agendamento realizado com sucesso!
+        </div>
       </form>
-      
-      <div id="mensagem" class="mensagem"></div>
       
       <a href="dashboard.html" class="back-link">← Voltar ao Dashboard</a>
     </div>
@@ -234,7 +225,7 @@
         window.location.href = "login.html";
       }
       
-      const mensagemElement = document.getElementById("mensagem");
+      const mensagemSucesso = document.getElementById("mensagem-sucesso");
       
       // Manipular o envio do formulário
       document.getElementById("form-agendamento").addEventListener("submit", function(e) {
@@ -261,15 +252,14 @@
         localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
 
         // Exibir mensagem de sucesso
-        mensagemElement.textContent = "Agendamento realizado com sucesso!";
-        mensagemElement.className = "mensagem sucesso";
+        mensagemSucesso.style.display = "block";
         
         // Limpar o formulário
         this.reset();
         
         // Esconder a mensagem após 3 segundos
         setTimeout(() => {
-          mensagemElement.className = "mensagem";
+          mensagemSucesso.style.display = "none";
         }, 3000);
       });
     });
