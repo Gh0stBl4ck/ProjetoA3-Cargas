@@ -1,0 +1,243 @@
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Carga - Agendamento de Cargas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="imagex/png" href="icon.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      color: #1e2130;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      color: #1e2130;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #1e2130;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #1e2130;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 2px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1e2130;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #2a2d3e;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-line {
+      width: 100%;
+      max-width: 600px;
+      height: 2px;
+      background-color: #0099ff;
+      margin: 40px auto 0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <div class="logo">
+       <img src="img1.jpg" alt="Smart Carga Logo">
+        <h1>Smart Carga</h1>
+      </div>
+      <p class="subtitle">SOFTWARE DE GESTÃO DE CARGAS</p>
+    </div>
+    
+    <h2 class="title">Cadastramento de Carga</h2>
+    
+    <div class="form-container">
+      <form id="form-agendamento">
+        <div class="form-group">
+          <label for="empresa">Empresa:</label>
+          <input type="text" id="empresa" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cidadeOrigem">Cidade de partida:</label>
+          <input type="text" id="cidadeOrigem" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cidade">Cidade de destino:</label>
+          <input type="text" id="cidade" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="data">Data:</label>
+          <input type="date" id="data" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="hora">Hora:</label>
+          <input type="time" id="hora" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="tipo">Tipo de carga:</label>
+          <select id="tipo" required>
+            <option value="">Selecione</option>
+            <option value="Açúcar">Açúcar</option>
+            <option value="Grãos">Grãos</option>
+            <option value="Contêiner">Contêiner</option>
+          </select>
+        </div>
+        
+        <button type="submit">Agendar</button>
+      </form>
+      
+      <a href="dashboard.html" class="back-link">← Voltar ao Dashboard</a>
+    </div>
+  </div>
+  
+  <div class="footer-line"></div>
+
+  <script>
+    // Verificar se o usuário está logado
+    document.addEventListener('DOMContentLoaded', function() {
+      const usuarioLogado = localStorage.getItem("usuarioLogado");
+      
+      if (!usuarioLogado) {
+        // Redirecionar para a página de login se não estiver logado
+        window.location.href = "login.html";
+      }
+      
+      // Manipular o envio do formulário
+      document.getElementById("form-agendamento").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const empresa = document.getElementById("empresa").value;
+        const cidadeOrigem = document.getElementById("cidadeOrigem").value;
+        const cidade = document.getElementById("cidade").value;
+        const data = document.getElementById("data").value;
+        const hora = document.getElementById("hora").value;
+        const tipo = document.getElementById("tipo").value;
+
+        const novoAgendamento = {
+          empresa,
+          cidadeOrigem,
+          cidade,
+          data,
+          hora,
+          tipo
+        };
+
+        const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+        agendamentos.push(novoAgendamento);
+        localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+
+        alert("Agendamento realizado com sucesso!");
+        this.reset();
+      });
+    });
+  </script>
+</body>
+</html>
